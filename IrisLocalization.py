@@ -54,8 +54,7 @@ def IrisLocalization(image):
                 mind = d
                 innercircle = circles_in
 
-    innercircle = np.uint16(np.around(innercircle[0]))
-
+    innercircle = np.uint8(innercircle[0,0]) # image data needs to be integer
 
     # detect outer boundary using Hough transform
 
@@ -77,10 +76,9 @@ def IrisLocalization(image):
                 mind = d
                 outercircle = circles_out
 
-    outercircle = np.uint16(np.around(outercircle[0]))
+    outercircle = np.uint8(outercircle[0,0]) # image data needs to be integer
 
     return innercircle, outercircle
-    
   
 
 # define a function for projection profile because of repeatitive use
