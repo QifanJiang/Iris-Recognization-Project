@@ -2,6 +2,7 @@ import numpy as np
 import os
 import cv2
 import matplotlib.pyplot as plt
+from scipy.ndimage.filters import gaussian_laplace
 
 '''
 Detecting pupil and outer boundary of iris.
@@ -43,11 +44,17 @@ def IrisLocalization(image):
     img_edge = gaussian_laplace(img_bi, sigma=3)
 
     # apply Hough Transform
-    for i in range(1,4):
+    mind = 10000
+    for i in range(1,5):
         circles_in = cv2.HoughCircles(img_edge,cv2.HOUGH_GRADIENT,1,100,
                                 param1=50,param2=10,minRadius=radius-i,maxRadius=radius+i)
+        if type(circles_in) != type(None):
+            d = np.sqrt((circles_in[0,0,0] - x_p3)**2 + (circles_in[0,0,1] - y_p3)**2 + (circles_in[0,0,2] - radius)**2)
+            if mind > d: # find nearest circle if it has several candidates
+                mind = d
+                innercircle = circles_in
 
-    circles_in = np.uint16(np.around(circles_in[0]))
+    innercircle = np.uint16(np.around(innercircle[0]))
 
 
     # detect outer boundary using Hough transform
@@ -60,11 +67,19 @@ def IrisLocalization(image):
     img_edge2 = gaussian_laplace(img_bi2, sigma=3)
 
     # apply Hough Transform
-    for i in range(1,4):
-        circles_out = cv2.HoughCircles(img_edge2,cv2.HOUGH_GRADIENT,1,100,
-                                param1=30,param2=30,minRadius=70,maxRadius=120)
+    mind = 10000
+    for i in range(1,5):
+        circles_out = cv2.HoughCircles(img_edge,cv2.HOUGH_GRADIENT,1,100,
+                                param1=50,param2=10,minRadius=70,maxRadius=120)
+        if type(circles_out) != type(None):
+            d = np.sqrt((circles_in[0,0,0] - x_p3)**2 + (circles_in[0,0,1] - y_p3)**2)
+            if mind > d: # find nearest circle if it has several candidates
+                mind = d
+                outercircle = circles_out
 
-    circles_out = np.uint16(np.around(circles_out[0]))
+    outercircle = np.uint16(np.around(outercircle[0]))
+
+    return innercircle, outercircle
     
   
 
