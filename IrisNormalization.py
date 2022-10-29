@@ -43,12 +43,14 @@ def Normalization(image, incir, outcir):
     M = 64
     N = 512
 
-    unwrapImage = np.zeros((M, N, 3))
+    img_gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+
+    unwrapImage = np.zeros((M, N))
 
     # project coordinates one by one
     for Y in range(M):
         for X in range(N):
             x, y = getOriginCoord(X, Y, incir, outcir)
-            unwrapImage[Y][X] = image[y][x]
+            unwrapImage[Y][X] = img_gray[y][x]
     
     return unwrapImage
