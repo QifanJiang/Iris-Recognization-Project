@@ -4,7 +4,7 @@ import cv2
 import matplotlib.pyplot as plt
 import math
 
-def IrisLocalization(image):
+def Localization(image):
     img_gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
     img_blurred = cv2.medianBlur(img_gray, 7)
 

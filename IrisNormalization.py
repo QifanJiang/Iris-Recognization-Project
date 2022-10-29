@@ -34,7 +34,7 @@ def getOriginCoord(X, Y, incir, outcir):
     return (x, y)
 
 # return unwrapped image
-def getUnwrap(image, incir, outcir):
+def Normalization(image, incir, outcir):
     '''
     image: original image
     incir, outcir: these inputs are the same with getOriginalCoord()
@@ -43,13 +43,12 @@ def getUnwrap(image, incir, outcir):
     M = 64
     N = 512
 
-    unwrapImage = np.zeros((M, N))
+    unwrapImage = np.zeros((M, N, 3))
 
     # project coordinates one by one
     for Y in range(M):
         for X in range(N):
             x, y = getOriginCoord(X, Y, incir, outcir)
-
             unwrapImage[Y][X] = image[y][x]
     
     return unwrapImage
