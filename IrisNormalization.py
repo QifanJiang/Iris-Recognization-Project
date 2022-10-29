@@ -1,7 +1,5 @@
 import numpy as np
-import os
 import cv2
-import matplotlib.pyplot as plt
 
 # this is a function which calculates Euclidian distance between two points
 def dist(x1, y1, x2, y2):
@@ -51,6 +49,10 @@ def Normalization(image, incir, outcir):
     for Y in range(M):
         for X in range(N):
             x, y = getOriginCoord(X, Y, incir, outcir)
-            unwrapImage[Y][X] = img_gray[y][x]
+            if(y >= 280):
+                y = 279
+            if(x >= 320):
+                x = 319
+            unwrapImage[Y][X] = img_gray[y-1][x]
     
     return unwrapImage
