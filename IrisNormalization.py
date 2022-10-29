@@ -50,6 +50,6 @@ def getUnwrap(image, incir, outcir):
         for X in range(N):
             x, y = getOriginCoord(X, Y, incir, outcir)
 
-            newImage[Y][X] = image[y][x]
+            unwrapImage[Y][X] = image[y][x]
     
     return unwrapImage
