@@ -51,8 +51,10 @@ def Normalization(image, incir, outcir):
             x, y = getOriginCoord(X, Y, incir, outcir)
             if(y >= 280):
                 y = 279
+                print('y')
             if(x >= 320):
                 x = 319
-            unwrapImage[Y][X] = img_gray[y-1][x]
+                print('x')
+            unwrapImage[Y][X] = img_gray[y][x]
     
     return unwrapImage
