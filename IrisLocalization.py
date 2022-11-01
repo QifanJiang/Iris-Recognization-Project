@@ -19,7 +19,7 @@ def Localization(image):
     r_in = int(inner_circles[0][0][2])
 
     outer_circles = cv2.HoughCircles(
-        img_blurred, cv2.HOUGH_GRADIENT, dp=1, minDist=30, param1=40, param2=23, minRadius=int(1.8*r_in), maxRadius=int(3.3*r_in))
+        img_blurred, cv2.HOUGH_GRADIENT, dp=1, minDist=30, param1=40, param2=23, minRadius=int(1.8*r_in), maxRadius=int(3.4*r_in))
     distances = []
     for i in range(len(outer_circles[0])):
         distances.append(math.dist([x_in,y_in],[outer_circles[0][i][0],outer_circles[0][i][1]]))
