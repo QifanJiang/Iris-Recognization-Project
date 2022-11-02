@@ -10,9 +10,8 @@ def IrisMatching(train, test):
     test: a list of feature vectors for test data  
     '''
     train_X = train
-    train_y = np.repeat(range(1,109),3)
+    train_y = np.repeat(range(1,109),3*7)
     test_X = test
-    test_y = np.repeat(range(1,109),4)
 
     # Implement LDA to improve omputational efficiency and classification accuracy 
     clf = LinearDiscriminantAnalysis()

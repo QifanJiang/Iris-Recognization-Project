@@ -7,7 +7,7 @@ def dist(x1, y1, x2, y2):
     return dist
 
 # find coordinates in an original coordinate system which correspond to those in a new coordinate systems (Backward mapping)
-def getOriginCoord(X, Y, incir, outcir):
+def getOriginCoord(X, Y, incir, outcir, rotate=0):
     '''
     X,Y: coordinate in a new coordinate system
     incir: tuple storing 3 values for inner boundary; x coordinate of center, y coordinate of center, and radius
@@ -19,9 +19,9 @@ def getOriginCoord(X, Y, incir, outcir):
     xi, yi, ri = incir # (xi, yi) is the center of inner circle; r is radius
     xo, yo, ro = outcir # (xo, yo) is the center of outer circle; r is radius
     
-    # these are due to the equations in the Lima's thesis
+    # these are due to the equaNtions in the Lima's thesis
     # in a clockwise order
-    th = 2 * np.pi * X / N
+    th = 2 * np.pi * X / N + rotate / 360
     x = (xi + ri * np.cos(th)) + (ro * np.cos(th) - ri * np.cos(th)) * Y / M
     y = (yi + ri * np.sin(th)) + (ro * np.sin(th) - ri * np.sin(th)) * Y / M
 
@@ -32,7 +32,7 @@ def getOriginCoord(X, Y, incir, outcir):
     return (x, y)
 
 # return unwrapped image
-def Normalization(image, incir, outcir):
+def Normalization(image, incir, outcir, rotate):
     '''
     image: original image
     incir, outcir: these inputs are the same with getOriginalCoord()
@@ -48,7 +48,7 @@ def Normalization(image, incir, outcir):
     # project coordinates one by one
     for Y in range(M):
         for X in range(N):
-            x, y = getOriginCoord(X, Y, incir, outcir)
+            x, y = getOriginCoord(X, Y, incir, outcir, rotate)
             if(y >= 280):
                 y = 279
             if(x >= 320):
