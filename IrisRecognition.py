@@ -5,36 +5,82 @@ import numpy as np
 import os
 import cv2
 import matplotlib.pyplot as plt
-from scipy.ndimage.filters import gaussian_laplace
+import math
+import importlib
 
-# We need to transform data(image) set so that we can deal with it easily
-# Now I'm reading an image data directly
-path = 'CASIA Iris Image Database (version 1.0)/001/1'
-image_file = os.path.join(path, '001_1_2.bmp')
-image = cv2.imread(image_file)
-img_gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+import IrisLocalization
+import IrisNormalization
+import IrisEnhancement
+import IrisFeatureExtraction
+import IrisMatching
+import IrisPerformanceEvaluation
 
+importlib.reload(IrisLocalization)
+importlib.reload(IrisNormalization)
+importlib.reload(IrisEnhancement)
+importlib.reload(IrisFeatureExtraction)
+importlib.reload(IrisMatching)
+importlib.reload(IrisPerformanceEvaluation)
 
-incir, outcir = IrisLocalization(img_gray)
-# Detecting pupil and outer boundary of iris
-# You can choose other iris localization methods if they work better
+# Generate the feature vectors
+def generateFeatureVector(image, incir, outcir, rotate):
+    
+    img = IrisNormalization.Normalization(image, incir, outcir, rotate)
+    img = IrisEnhancement.Enhancement(img)
+    V = IrisFeatureExtraction.FeatureExtraction(img)
 
-unwrapImage = IrisNormalization(img_gray, incir, outcir)
-# Mapping the iris from Cartesian coordinates to polar coordinates
+    return V
 
-ImageEnhancement()
-# Enhancing the normalized iris
+def extractImage(flag):
+    # flag: 1 if you want to extract train data, 2 if test data
+    images = []
+    source = 'CASIA Iris Image Database (version 1.0)/'
+    n_eye = 108
+    if flag == 1: # train data
+        n = 3
+    elif flag == 2: # test data
+        n = 4
 
-FeatureExtraction()
-# Filtering the iris and extracting features
+    for i in range(1, n_eye+1): # we need to change 2 -> n_eye!
+        for j in range(1, n+1):
+            path = source + '%03d' % (i,) + '/' + str(flag) + '/'
+            filename = '%03d' % (i,) + '_' + str(flag) + '_' + str(j) + '.bmp'
+            image = cv2.imread(path + filename)
+            images.append(image)
+            
+    return images
 
-IrisMatching()
-# Using Fisher linear discriminant for dimension reduction 
-# and nearest center classifier for classification
+train_images = extractImage(1)
+test_images = extractImage(2)
 
-PerformanceEvaluation()
-# Calculating the CRR for the identification mode 
-# (CRR for all three measures, i.e., L1, L2, and Cosine similarity, should be >=75% , the higher the better), 
-# which will output Table 3 & Fig. 10 (refer to Ma’s paper)
-# Calculating ROC curve for verification mode, which will output Table 4 and Fig. 11 
-# (using Bootstrap and calculating confidence interval is not required).
+# Store the feature vectors
+train_vecs = []
+test_vecs = []
+
+for image in train_images:
+    incir, outcir = IrisLocalization.Localization(image)
+    # Handle the rotation
+    degrees = [-9,-6,-3,0,3,6,9]
+    for degree in degrees:
+        V = generateFeatureVector(image, incir, outcir, degree)
+        train_vecs.append(V)
+train_vecs = np.array(train_vecs)
+
+for image in test_images:
+    incir, outcir = IrisLocalization.Localization(image)
+    V = generateFeatureVector(image, incir, outcir, 0)
+    test_vecs.append(V)
+test_vecs = np.array(test_vecs)
+
+# Different dimensionality
+n_components_list = [20,40,60,80,107]
+df_min_list = []
+df_minmeasure_list = []
+
+for n_components in n_components_list:
+    df_min,df_minmeasure = IrisMatching.Matching(train_vecs, test_vecs,n_components)
+    df_min_list.append(df_min)
+    df_minmeasure_list.append(df_minmeasure)
+
+# Evaluate and output the result, then store a plot of CRR vs Dimensionality on Cosine similarity
+IrisPerformanceEvaluation.PerformanceEvaluation(df_min_list,df_minmeasure_list,n_components_list)

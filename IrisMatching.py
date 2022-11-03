@@ -4,7 +4,7 @@ from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
 
 # Search closest iris among train dataset
 # return two list, one of which stores closest iris and another stores their similarity measures
-def IrisMatching(train, test):
+def Matching(train, test, n_components):
     '''
     train: a list of feature vectors for train data
     test: a list of feature vectors for test data  
@@ -14,21 +14,21 @@ def IrisMatching(train, test):
     test_X = test
 
     # Implement LDA to improve omputational efficiency and classification accuracy 
-    clf = LinearDiscriminantAnalysis()
+    clf = LinearDiscriminantAnalysis(n_components=n_components)
     clf.fit(train_X, train_y)
 
     f = clf.transform(train_X)
     f_test = clf.transform(test_X)
 
     df_min = pd.DataFrame(columns=['L1', 'L2', 'Cosine'])
-    df_minmeasure = pd.DataFrame(columns=['L1', 'L2', 'Cosine'])
+    df_minmeasure = pd.DataFrame(columns=['Cosine'])
 
 
     # Calculate Similarity Measures 
     for i in range(len(f_test)):
 
         mind1 = 1000
-        mind2 = 1000
+        mind2 = 100000
         mind3 = 1000
 
         for j in range(len(f)):
@@ -49,6 +49,6 @@ def IrisMatching(train, test):
             
         # Store outputs
         df_min.loc[i+1] = [closest_d1, closest_d2, closest_d3]
-        df_minmeasure.loc[i+1] = [mind1, mind2, mind3]
+        df_minmeasure.loc[i+1] = [mind3]
     
     return df_min, df_minmeasure
