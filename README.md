@@ -51,9 +51,11 @@ Peer evaluation form
 
 
 To Qifan Jiang, qj2172
+
 Though we built and reviewed whole process of this project together, Qifan particularly contributed to the Localization, Enhancement, FeatureExtraction and Evaluation process. When I struggled with detecting outer boundary for a iris, Qifan took the initiative in working on and resolved the problem. 
 
 To Yuta Adachi, ya2488
+
 Yuta made a huge contribution on the project spcially in the Localization, Normalization, and Matching process. He offered many help on the organization when I finished and added new sub functions to our project. We succefully achieve our goal, and It's really a nice experience working with Yuta.
 
 ----------------------------
