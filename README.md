@@ -45,9 +45,9 @@ Peer evaluation form
 ----------------------------
 
 |               | IrisRecognition | IrisLocalization | IrisNormalization | ImageEnhancement | FeatureExtraction | IrisMatching | PerformanceEvaluation | Readme File |
-| ------------- | --------------- | ---------------- | ----------------- | ---------------- | ----------------- | ------------ | --------------------- | ----------- |
-| Qifan Jiang   |        √        |         √        |                   |         √        |         √         |              |            √          |        √        |
-| Yuta Adachi   |        √        |         √        |         √         |                  |                   |       √      |                 |        √        |
+| :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
+| Qifan Jiang   |  √  |  √  |     |  √  |  √  |     |  √  |  √  |
+| Yuta Adachi   |  √  |  √  |  √  |     |     |  √  |     |  √  |
 
 
 To Qifan Jiang, qj2172
