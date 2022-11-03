@@ -28,8 +28,8 @@ Our Project Design
 
 6. Evaluation
     - use the dimensionality of size-1 (107) to get the RCC of 3 different matching methods: L1, L2 and Cosine
-    - perfrom matching with different dimensionality with the Cosine similarity measure, plot and store the graph as "plot1.png"
-    - calculate the FNMR and FMR with different thresholds mentioned in the paper
+    - perfrom matching with different dimensionality with the Cosine similarity measure, plot and store the graph as "plot.png"
+    - calculate the FNMR and FMR with different thresholds mentioned in the paper, and generate the ROC curve
 
 ----------------------------
 
